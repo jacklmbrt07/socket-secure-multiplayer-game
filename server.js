@@ -1,17 +1,21 @@
 require("dotenv").config();
+const portNum = process.env.PORT || 3000;
+
 const express = require("express");
+const http = require("http");
+const path = require("path");
+const socketIO = require("socket.io");
 const bodyParser = require("body-parser");
 const expect = require("chai");
-const socket = require("socket.io")(80);
 
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner.js");
 
 const app = express();
-const http = require("http");
-const server2 = http.Server(app);
-const io = socket(server2);
+const server = http.Server(app);
+const io = socketIO(server);
 
+app.set("port", portNum);
 app.use("/public", express.static(process.cwd() + "/public"));
 app.use("/assets", express.static(process.cwd() + "/assets"));
 
@@ -31,10 +35,8 @@ app.use(function (req, res, next) {
   res.status(404).type("text").send("Not Found");
 });
 
-const portNum = process.env.PORT || 3000;
-
 // Set up server and tests
-const server = app.listen(portNum, () => {
+server.listen(portNum, () => {
   console.log(`Listening on port ${portNum}`);
   if (process.env.NODE_ENV === "test") {
     console.log("Running Tests...");
@@ -49,11 +51,10 @@ const server = app.listen(portNum, () => {
   }
 });
 
-io.on("connection", (socket) => {
-  console.log("user connected: ", socket.id);
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
+io.on("connection", (socket) => {});
+
+setInterval(() => {
+  io.sockets.emit("message", "hi!");
+}, 1000);
 
 module.exports = app; // For testing
