@@ -2,12 +2,15 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const expect = require("chai");
-const socket = require("socket.io");
+const socket = require("socket.io")(80);
 
 const fccTestingRoutes = require("./routes/fcctesting.js");
 const runner = require("./test-runner.js");
 
 const app = express();
+const http = require("http");
+const server2 = http.Server(app);
+const io = socket(server2);
 
 app.use("/public", express.static(process.cwd() + "/public"));
 app.use("/assets", express.static(process.cwd() + "/assets"));
@@ -28,13 +31,6 @@ app.use(function (req, res, next) {
   res.status(404).type("text").send("Not Found");
 });
 
-socket.on("connection", (socket) => {
-  console.log("user connected: ", socket.id);
-  socket.on("disconnect", () => {
-    console.log("user disconnected");
-  });
-});
-
 const portNum = process.env.PORT || 3000;
 
 // Set up server and tests
@@ -51,6 +47,13 @@ const server = app.listen(portNum, () => {
       }
     }, 1500);
   }
+});
+
+io.on("connection", (socket) => {
+  console.log("user connected: ", socket.id);
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
 });
 
 module.exports = app; // For testing
