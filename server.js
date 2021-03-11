@@ -60,6 +60,7 @@ setInterval(() => {
 var players = {};
 io.on("connection", (socket) => {
   socket.on("new player", () => {
+    console.log("Player connected: ", socket.id)
     players[socket.id] = {
       x: 300,
       y: 300,
@@ -80,10 +81,14 @@ io.on("connection", (socket) => {
       player.y -= 5;
     }
   });
+  socket.on('disconnect', () => {
+    console.log('player disconnected')
+  })
 });
 
 setInterval(() => {
   io.sockets.emit("state", players);
 }, 1000 / 60);
+
 
 module.exports = app; // For testing

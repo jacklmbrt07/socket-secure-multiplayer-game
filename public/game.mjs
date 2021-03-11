@@ -19,34 +19,34 @@ var movement = {
 
 document.addEventListener("keydown", (event) => {
   switch (event.keyCode) {
-    case 65: // A left
+    case 0x25: // left
       movement.left = true;
       break;
-    case 68: // D right
+    case 0x26: // up
+      movement.down = true;
+      break;
+    case 0x27: // right
       movement.right = true;
       break;
-    case 83: // W down
+    case 0x28: // down
       movement.up = true;
-      break;
-    case 87: // S up
-      movement.down = true;
       break;
   }
 });
 
 document.addEventListener("keyup", (event) => {
   switch (event.keyCode) {
-    case 65: // A left
+    case 0x25: // left
       movement.left = false;
       break;
-    case 68: // D right
+    case 0x26: // up
+      movement.down = false;
+      break;
+    case 0x27: // right
       movement.right = false;
       break;
-    case 83: // W down
+    case 0x28: // down
       movement.up = false;
-      break;
-    case 87: // S up
-      movement.down = false;
       break;
   }
 });
@@ -58,11 +58,10 @@ setInterval(() => {
 
 canvas.width = 800;
 canvas.height = 600;
-
-
+//wtf
 socket.on("state", (players) => {
   context.clearRect(0, 0, 800, 600);
-  context.fillStyle = "green";
+  context.fillStyle = "red";
   for (var id in players) {
     var player = players[id];
     context.beginPath();
@@ -70,3 +69,11 @@ socket.on("state", (players) => {
     context.fill();
   }
 });
+
+// var lastUpdateTime = new Date().getTime();
+// setInterval(() => {
+//   var currentTime = new Date().getTime();
+//   var timeDifference = currentTime - lastUpdateTime;
+//   player.x += 5 * timeDifference;
+//   lastUpdateTime = currentTime;
+// }, 1000 / 60);
