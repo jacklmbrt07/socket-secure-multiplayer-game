@@ -61,7 +61,7 @@ canvas.height = 600;
 //wtf
 socket.on("state", (players) => {
   context.clearRect(0, 0, 800, 600);
-  context.fillStyle = "red";
+  context.fillStyle = "green";
   for (var id in players) {
     var player = players[id];
     context.beginPath();
