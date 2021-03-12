@@ -59,14 +59,20 @@ setInterval(() => {
 canvas.width = 800;
 canvas.height = 600;
 //wtf
+
+const image = new Image
+image.src = "./assets/cat.png"
+
 socket.on("state", (players) => {
   context.clearRect(0, 0, 800, 600);
-  context.fillStyle = "green";
+  
+  // context.fillStyle = "green";
   for (var id in players) {
     var player = players[id];
-    context.beginPath();
-    context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-    context.fill();
+    context.drawImage(Image, 100, 100, 100, 100);
+    // context.beginPath();
+    // context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+    // context.fill();
   }
 });
 
