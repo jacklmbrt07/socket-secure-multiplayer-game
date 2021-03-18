@@ -66,20 +66,20 @@ image.src = "./assets/cat.png"
 socket.on("state", (players) => {
   context.clearRect(0, 0, 800, 600);
   
-  // context.fillStyle = "green";
+  context.fillStyle = "green";
   for (var id in players) {
     var player = players[id];
     context.drawImage(Image, 100, 100, 100, 100);
-    // context.beginPath();
-    // context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-    // context.fill();
+    context.beginPath();
+    context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+    context.fill();
   }
 });
 
-// var lastUpdateTime = new Date().getTime();
-// setInterval(() => {
-//   var currentTime = new Date().getTime();
-//   var timeDifference = currentTime - lastUpdateTime;
-//   player.x += 5 * timeDifference;
-//   lastUpdateTime = currentTime;
-// }, 1000 / 60);
+var lastUpdateTime = new Date().getTime();
+setInterval(() => {
+  var currentTime = new Date().getTime();
+  var timeDifference = currentTime - lastUpdateTime;
+  player.x += 5 * timeDifference;
+  lastUpdateTime = currentTime;
+}, 1000 / 60);
